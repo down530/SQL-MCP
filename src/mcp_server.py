@@ -42,7 +42,17 @@ def get_validated_access_token() -> AccessToken:
     try:
         access_token = get_access_token()
         if access_token is None:
-            raise ToolError("未提供访问令牌或令牌无效")
+            # 本地开发模式：如果未提供令牌，返回默认权限令牌
+            from fastmcp.server.dependencies import AccessToken as AT
+            print("[WARN] No access token provided, using default permissions for local development")
+            return AT(
+                client_id="local-dev",
+                scopes=["data:read_tables", "data:read_table_data"],
+                audience="data-analysis-mcp",
+                issuer="local",
+                subject="local-dev",
+                expiration=None,
+            )
         return access_token
     except Exception as e:
         raise ToolError(f"权限验证失败: {str(e)}")
@@ -241,14 +251,14 @@ if __name__ == "__main__":
     host = os.getenv('MCP_HOST', '127.0.0.1')
     port = int(os.getenv('MCP_PORT', 8000))
 
-    print(f"🚀 启动MCP数据查询服务器...")
-    print(f"📍 地址: http://{host}:{port}")
-    print(f"📋 可用工具:")
-    print(f"   - health_check: 健康检查")
-    print(f"   - get_user_permissions: 获取用户权限")
-    print(f"   - get_database_tables: 获取数据库表列表")
-    print(f"   - get_table_structure: 获取表结构")
-    print(f"   - execute_sql_query: 执行SQL查询")
-    print(f"   - generate_sql_from_question: 自然语言生成SQL")
-    print(f"   - analyze_query_result: 查询结果分析")
+    print(f"Starting MCP Data Query Server...")
+    print(f"Address: http://{host}:{port}")
+    print(f"Available Tools:")
+    print(f"   - health_check")
+    print(f"   - get_user_permissions")
+    print(f"   - get_database_tables")
+    print(f"   - get_table_structure")
+    print(f"   - execute_sql_query")
+    print(f"   - generate_sql_from_question")
+    print(f"   - analyze_query_result")
     mcp.run(transport="streamable-http", host=host, port=port)

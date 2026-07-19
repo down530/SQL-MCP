@@ -29,18 +29,18 @@ class DatabaseManager:
                 charset='utf8mb4'
             )
             
-            print("✅ 成功连接到数据库: {}".format(self.database))
+            print("[OK] Connected to database: {}".format(self.database))
             return True
             
         except Exception as e:
-            print("❌ 数据库连接失败: {}".format(str(e)))
+            print("[ERROR] Database connection failed: {}".format(str(e)))
             return False
     
     def execute_query(self, query: str) -> Optional[List[Dict[str, Any]]]:
         """执行SQL查询并返回字典列表"""
         try:
             if not self.connection:
-                print("❌ 数据库未连接")
+                print("[ERROR] Database not connected")
                 return None
             
             cursor = self.connection.cursor(dictionary=True)
@@ -53,14 +53,14 @@ class DatabaseManager:
             if results:
                 # 转换数据类型
                 converted_results = [self._convert_row_types(row) for row in results]
-                print("✅ 查询成功，返回 {} 行数据".format(len(converted_results)))
+                print("[OK] Query successful, returned {} rows".format(len(converted_results)))
                 return converted_results
             else:
-                print("✅ 查询成功，但没有返回数据")
+                print("[OK] Query successful, but no data returned")
                 return []
             
         except Exception as e:
-            print("❌ 查询执行失败: {}".format(str(e)))
+            print("[ERROR] Query execution failed: {}".format(str(e)))
             return None
     
     def _convert_row_types(self, row: Dict[str, Any]) -> Dict[str, Any]:
@@ -103,7 +103,7 @@ class DatabaseManager:
             }
             
         except Exception as e:
-            print("❌ 获取表信息失败: {}".format(str(e)))
+            print("[ERROR] Failed to get table info: {}".format(str(e)))
             return {}
     
     def get_all_tables(self) -> List[str]:
@@ -117,14 +117,14 @@ class DatabaseManager:
                 return table_names
             return []
         except Exception as e:
-            print("❌ 获取表列表失败: {}".format(str(e)))
+            print("[ERROR] Failed to get table list: {}".format(str(e)))
             return []
     
     def close(self):
         """关闭数据库连接"""
         if self.connection:
             self.connection.close()
-            print("✅ 数据库连接已关闭")
+            print("[OK] Database connection closed")
     
     def __enter__(self):
         self.connect()

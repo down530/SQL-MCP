@@ -193,3 +193,6 @@ logs/
 # Configuration files with sensitive data
 config.ini
 secrets.json
+
+# MCP auth keys
+.keys/
