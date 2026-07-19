@@ -259,6 +259,4 @@ if __name__ == "__main__":
     print(f"   - get_database_tables")
     print(f"   - get_table_structure")
     print(f"   - execute_sql_query")
-    print(f"   - generate_sql_from_question")
-    print(f"   - analyze_query_result")
     mcp.run(transport="streamable-http", host=host, port=port)
