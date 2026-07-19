@@ -94,8 +94,6 @@ Authorization=Bearer ...
    - get_database_tables: 获取数据库表列表
    - get_table_structure: 获取表结构
    - execute_sql_query: 执行SQL查询
-   - generate_sql_from_question: 自然语言生成SQL
-   - analyze_query_result: 查询结果分析
 ```
 
 ## MCP客户端配置
